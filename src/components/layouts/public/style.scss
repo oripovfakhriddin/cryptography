@@ -1,0 +1,44 @@
+.header__block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header__logo__box {
+  a {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    &:hover p {
+      color: red;
+    }
+  }
+  img {
+    width: 48px;
+    height: 48px;
+  }
+  p {
+    color: white;
+  }
+}
+
+.site__layout {
+  height: 100vh !important;
+}
+
+.nav {
+  .nav__list {
+    display: flex;
+    gap: 20px;
+    .active {
+      color: red;
+    }
+    a {
+      color: white;
+      font-size: 18px;
+      transition: 0.5s;
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}

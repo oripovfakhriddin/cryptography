@@ -1,0 +1,36 @@
+.user__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user__img__box {
+  border-radius: 50%;
+  overflow: hidden;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.user__content__box {
+  margin-top: 30px;
+  text-align: center;
+  div {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  p {
+    margin-top: 15px;
+    color: white;
+  }
+  h2 {
+    color: aliceblue;
+  }
+}
+
+.item__category__card {
+  padding: 10px;
+}

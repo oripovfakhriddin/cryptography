@@ -1,0 +1,25 @@
+.ant-form-item-required {
+  color: white !important;
+}
+
+.login__title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: white;
+  font-size: 50px;
+}
+
+.form__box {
+  form {
+    padding: 50px;
+    background: transparent;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    .ant-form-item-required {
+      color: red !important;
+      font-size: 18px;
+    }
+  }
+}
