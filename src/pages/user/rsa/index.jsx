@@ -7,7 +7,7 @@ import "./style.scss";
 const UserRsaPage = () => {
   const [stateShifrText, setStateShifrText] = useState(null);
 
-  const isCoprime = (e, fi) => {
+  const isGCD = (e, fi) => {
     while (fi != 0) {
       let temp = fi;
       fi = e % fi;
@@ -18,92 +18,27 @@ const UserRsaPage = () => {
 
   const select_E_Number = (fi) => {
     for (let i = 2; i < fi; i++) {
-      if (isCoprime(i, fi)) {
+      if (isGCD(i, fi)) {
         return i;
       }
     }
   };
 
-  const alphabet = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "@",
-    "#",
-    "$",
-    "%",
-    "&",
-    "!",
-    "?",
-    ".",
-    "'",
-    ":",
-    ";",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    ")",
-  ];
-
   const onFinish = (values) => {
-    const { pNumber, qNumber, text } = values;
+    const { pNumber, qNumber, message } = values;
 
     let nNumber = pNumber * qNumber;
     let fiNumber = (pNumber - 1) * (qNumber - 1);
     let eNumber = select_E_Number(fiNumber);
 
     let shifr = [];
-    let shifrText = "";
 
-    //SHIFRLASH
+   
 
-    for (let i = 0; i < text.length; i++) {
-      for (let j = 0; j < alphabet.length; j++) {
-        if (text[i] == alphabet[j]) {
-          shifr.push(Math.pow(j + 1, eNumber) % nNumber);
-        }
-      }
+    for (let i = 0; i < message.length; i++) {
+      shifr.push(Math.pow(message[i], eNumber) % nNumber);
     }
-
-    for (let i = 0; i < shifr.length; i++) {
-      for (let j = 0; j < alphabet.length; j++) {
-        if (shifr[i] == j + 1) {
-          shifrText += alphabet[j];
-        }
-      }
-    }
-
-    setStateShifrText(shifrText);
+    setStateShifrText(shifr.join(""));
   };
 
   return (
@@ -156,7 +91,7 @@ const UserRsaPage = () => {
 
             <Form.Item
               label="Shifrlanuvchi xabarni kiriting:  "
-              name="text"
+              name="message"
               rules={[
                 {
                   required: true,

@@ -6,81 +6,66 @@ import "./style.scss";
 
 const RasShifirovkaRSAPage = () => {
   const [stateShifrText, setStateShifrText] = useState(null);
-  const alphabet = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "@",
-    "#",
-    "$",
-    "%",
-    "&",
-    "!",
-    "?",
-    ".",
-    "'",
-    ":",
-    ";",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    ")",
-  ];
+  const [dNumber, setDNumber] = useState(1n);
+  const [pNumber, setPNumber] = useState(1n);
+  const [qNumber, setQNumber] = useState(1n);
+
+  const gcd = (a, b) => {
+    while (b != 0) {
+      let temp = b;
+      b = a % b;
+      a = temp;
+    }
+    return a;
+  };
+
+  const func = (a, n) => {
+    let temp = (a * a + 1n) % n;
+    return temp;
+  };
 
   const onFinish = (values) => {
-    const { key, text } = values;
-    let universalKey = "";
-    if (key.length >= text.length) {
-      universalKey = key;
-    } else {
-      for (let i = 0; i < Math.ceil(text.length / key.length); i++) {
-        universalKey += key;
+    const { eNumber, nNumber, shifrMessage } = values;
+
+    let x0 = BigInt(2);
+    let y0 = BigInt(2);
+
+    let nN = BigInt(nNumber);
+
+    let natija = 1n;
+
+    for (let i = 1n; i < 1000000n; i++) {
+      x0 = func(x0, nN);
+      y0 = func(func(y0, nN), nN);
+      let temp = x0 - y0;
+      natija = gcd(temp, nN);
+      if (natija !== 1n && natija !== -1n) {
+        break;
       }
     }
 
-    let encryptedText = "";
+    const pN = natija < 0 ? natija * -1n : natija;
+    console.log(pN);
 
-    for (let i = 0; i < text.length; i++) {
-      const keyChar = universalKey[i];
-      const textChar = text[i];
+    setPNumber(pN);
+    setQNumber(nN / pN);
 
-      const keyNum = alphabet.indexOf(keyChar);
-      const textNum = alphabet.indexOf(textChar);
+    let fiNumber = (pNumber - 1n) * (qNumber - 1n);
+    console.log(fiNumber);
 
-      const encryptedChar = alphabet[keyNum ^ textNum];
-      encryptedText += encryptedChar;
+    for (let i = 0; i < 100000; i++) {
+      if ((eNumber * i) % Number(fiNumber) === 1) {
+        console.log(i);
+        setDNumber(i);
+        break;
+      }
     }
-    setStateShifrText(encryptedText);
+
+    const shifr = [];
+    for (let i = 0; i < shifrMessage.length; i++) {
+      shifr.push(Math.pow(shifrMessage[i], dNumber) % nNumber);
+    }
+    setStateShifrText(shifr);
   };
 
   return (
@@ -107,7 +92,7 @@ const RasShifirovkaRSAPage = () => {
           >
             <Form.Item
               label="E raqamini kiriting: "
-              name="pNumber"
+              name="eNumber"
               rules={[
                 {
                   required: true,
@@ -120,7 +105,7 @@ const RasShifirovkaRSAPage = () => {
 
             <Form.Item
               label="N raqamini kiriting: "
-              name="qNumber"
+              name="nNumber"
               rules={[
                 {
                   required: true,
@@ -128,12 +113,12 @@ const RasShifirovkaRSAPage = () => {
                 },
               ]}
             >
-              <Input type="number" placeholder="N raqami" />
+              <Input type="text" placeholder="N raqami" />
             </Form.Item>
 
             <Form.Item
               label="Shifr xabarni kiriting:  "
-              name="text"
+              name="shifrMessage"
               rules={[
                 {
                   required: true,
